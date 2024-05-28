@@ -71,7 +71,7 @@ public class RoomController {
             byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
             if (photoBytes != null && photoBytes.length > 0) {
                 String base64Photo = Base64.encodeBase64String(photoBytes);
-                RoomResponse roomResponse = getRoomRespose(room);
+                RoomResponse roomResponse = getRoomResponse(room);
                 roomResponse.setPhoto(base64Photo);
                 roomResponses.add(roomResponse);
             }
@@ -97,7 +97,7 @@ public class RoomController {
         Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
         Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
         theRoom.setPhoto(photoBlob);
-        RoomResponse roomResponse = getRoomRespose(theRoom);
+        RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);
     }
 
@@ -105,23 +105,23 @@ public class RoomController {
     public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
         Optional<Room> theRoom = roomService.getRoomById(roomId);
         return theRoom.map(room -> {
-            RoomResponse roomResponse = getRoomRespose(room);
+            RoomResponse roomResponse = getRoomResponse(room);
             return  ResponseEntity.ok(Optional.of(roomResponse));
         }).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
     }
 
-    @GetMapping("/available-rooms")    
+    @GetMapping("/available-rooms")
     public ResponseEntity<List<RoomResponse>> getAvailableRooms(
-            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
-            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
-            @RequestParam("roomType") String roomType) throws SQLException{
-        List<Room> availableRooms = roomService.getAvailableRooms(checkInDate,checkOutDate,roomType);
+            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkInDate,
+            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkOutDate,
+            @RequestParam("roomType") String roomType) throws SQLException {
+        List<Room> availableRooms = roomService.getAvailableRooms(checkInDate, checkOutDate, roomType);
         List<RoomResponse> roomResponses = new ArrayList<>();
-        for(Room room : availableRooms){
+        for (Room room : availableRooms){
             byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
-            if(photoBytes != null && photoBytes.length > 0){
+            if (photoBytes != null && photoBytes.length > 0){
                 String photoBase64 = Base64.encodeBase64String(photoBytes);
-                RoomResponse roomResponse = getRoomRespose(room);
+                RoomResponse roomResponse = getRoomResponse(room);
                 roomResponse.setPhoto(photoBase64);
                 roomResponses.add(roomResponse);
             }
@@ -131,10 +131,9 @@ public class RoomController {
         }else{
             return ResponseEntity.ok(roomResponses);
         }
-
     }
 
-    private RoomResponse getRoomRespose(Room room) {
+    private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
        List<BookingResponse> bookingInfo = bookings
                 .stream()
@@ -152,7 +151,7 @@ public class RoomController {
         }
         return new RoomResponse(room.getId(),
                 room.getRoomType(), room.getRoomPrice(),
-                room.isBooked(), photoBytes);
+                room.isBooked(), photoBytes, bookingInfo);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {

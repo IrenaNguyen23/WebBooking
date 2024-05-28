@@ -49,7 +49,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path='/logout' element={<FindBooking />} />
+            {/* <Route path='/logout' element={<FindBooking />} /> */}
           </Routes>
         </Router>
         <Footer />

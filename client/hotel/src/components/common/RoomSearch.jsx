@@ -4,7 +4,6 @@ import { getAvailableRooms } from '../utils/ApiFunctions'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import RoomTypeSelector from './RoomTypeSelector'
 import RoomSearchResult from './RoomSearchResult'
-import RoomFilter from './RoomFilter'
 
 const RoomSearch = () => {
     const [searchQuery, setSearchQuery] = useState({

@@ -169,10 +169,10 @@ const Profile = () => {
 												<td>{booking.room.id}</td>
 												<td>{booking.room.roomType}</td>
 												<td>
-													{moment(booking.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+													{moment(booking.checkIndate).subtract(1, "month").format("MMM Do, YYYY")}
 												</td>
 												<td>
-													{moment(booking.checkOutDate)
+													{moment(booking.checkOutdate)
 														.subtract(1, "month")
 														.format("MMM Do, YYYY")}
 												</td>
