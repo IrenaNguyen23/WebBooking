@@ -95,4 +95,15 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType) {
        return roomRepository.findAvailableRoomsByDatesAndType(checkInDate,checkOutDate,roomType);
     }
+
+    @Override
+    public Room findById(Long id) {
+        Optional<Room> room = roomRepository.findById(id);
+        return room.orElseThrow(() -> new RuntimeException("Room not found with id: " + id));
+    }
+
+    @Override
+    public List<Room> getRoomByRoomId(Long id) {
+        return roomRepository.findRoomById(id);
+    }
 }

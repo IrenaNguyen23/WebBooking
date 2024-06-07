@@ -29,4 +29,8 @@ public interface RoomService {
     Optional<Room> getRoomById(Long roomId);
 
     List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType);
+
+    Room findById(Long roomId);
+
+    List<Room> getRoomByRoomId(Long id);
 }

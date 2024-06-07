@@ -27,7 +27,6 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
             navigate("/booking-success")
         }
     }, [isBookingConfirmed, navigate])
-    console.log(booking)
 
     return (
         <div className='card card-body mt-5'>

@@ -135,7 +135,7 @@ public class RoomController {
 
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-       List<BookingResponse> bookingInfo = bookings
+        List<BookingResponse> bookingInfo = bookings
                 .stream()
                 .map(booking -> new BookingResponse(booking.getBookingId(),
                         booking.getCheckInDate(),

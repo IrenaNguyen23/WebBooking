@@ -27,6 +27,52 @@ export async function addRoom(photo, roomType, roomPrice) {
 	}
 }
 
+export async function addComment(image, content, rating, roomId, userId) {
+    const formData = new FormData()
+    formData.append("image", image);
+	formData.append("content", content)
+	formData.append("rating", rating)
+	formData.append("roomId", roomId)
+	formData.append("userId", userId)
+
+	const response = await api.post("/comments/add-comment", formData,)
+	if (response.status === 201) {
+		return true
+	} else {
+		return false
+	}
+}
+
+export async function getCommentByRoomId(roomId) {
+    try {
+        const resuilt = await api.get(`/comments/room/${roomId}`)
+        return resuilt.data
+    } catch (error) {
+        throw new Error(`Error fetching room ${error.message}`)
+    }
+}
+
+export async function editComment(commentId, commentData) {
+    const formData = new FormData()
+    formData.append("image", commentData.image);
+	formData.append("content", commentData.content)
+	formData.append("rating", commentData.rating)
+
+	const response = await api.put(`/comments/update-comment/${commentId}`, formData,)
+	return response
+}
+
+export async function deleteComment(id, email) {
+    try {
+        const result = await api.delete(`/comments/delete-comment/${id}?email=${email}`, {
+            headers: getHeader()
+        });
+        return result.data;
+    } catch (error) {
+        throw new Error(`Error deleting comment: ${error.message}`);
+    }
+}
+
 export async function getRoomTypes() {
     try {
         const response = await api.get("/rooms/room/types")

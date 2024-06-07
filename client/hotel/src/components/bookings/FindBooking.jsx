@@ -59,7 +59,7 @@ const FindBooking = () => {
 
 		setTimeout(() => setIsLoading(false), 2000)
 	}
-
+	console.log(bookingInfo)
 	const handleBookingCancellation = async (bookingId) => {
 		try {
 			await cancelBooking(bookingInfo.bookingId)
@@ -111,11 +111,11 @@ const FindBooking = () => {
 						<p>Room Type: {bookingInfo.room.roomType}</p>
 						<p>
 							Check-in Date:{" "}
-							{moment(bookingInfo.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+							{moment(bookingInfo.checkIndate).subtract(1, "month").format("MMM Do, YYYY")}
 						</p>
 						<p>
 							Check-out Date:{" "}
-							{moment(bookingInfo.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+							{moment(bookingInfo.checkOutdate).subtract(1, "month").format("MMM Do, YYYY")}
 						</p>
 						<p>Full Name: {bookingInfo.guestFullname}</p>
 						<p>Email Address: {bookingInfo.guestEmail}</p>

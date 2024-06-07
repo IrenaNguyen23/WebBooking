@@ -19,6 +19,7 @@ import Registration from './components/auth/Registration';
 import Profile from './components/auth/Profile';
 import { AuthProvider } from './components/auth/AuthProvider';
 import RequireAuth from './components/auth/RequireAuth';
+import RoomDetail from './components/room/RoomDetail';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
             <Route path='/edit-room/:roomId' element={<EditRoom />} />
             <Route path='/existing-rooms' element={<ExistingRoom />} />
             <Route path='/browse-all-rooms' element={<RoomListing />} />
+            <Route path='/room-detail/:roomId' element={<RoomDetail/>}/>
             <Route path='/admin' element={<Admin />} />
             <Route path='/booking-success' element={<BookingSuccess />} />
             <Route path='/existing-bookings' element={<Bookings />} />
