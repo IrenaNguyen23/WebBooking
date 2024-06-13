@@ -18,7 +18,7 @@ const BookingSuccess = () => {
                 ) : (
                     <div>
                         <h3 className='text-danger'> Error Booking Room !</h3>
-                        <p className='text-danger'> {error}</p>
+                        <p className='text-success'>The room you selected has been booked. Please choose another room again. The money will be refunded to the account where you paid! </p>
                     </div>
                 )}
             </div>

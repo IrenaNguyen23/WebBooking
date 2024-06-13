@@ -3,6 +3,7 @@ import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"
 
 const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
     const checkInDate = moment(booking.checkInDate)
@@ -12,13 +13,21 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false)
     const navigate = useNavigate()
 
-    const handleConfirmBooking = () => {
-        setIsProcessingPayment(true)
-        setTimeout(() => {
+    // const handleConfirmBooking = () => {
+    //     setIsProcessingPayment(true)
+    //     setTimeout(() => {
+    //         setIsProcessingPayment(false)
+    //         setIsBookingConfirmed(true)
+    //         onConfirm()
+    //     }, 3000)
+    // }
+
+    const handleApprove = (data, actions) => {
+        return actions.order.capture().then(() => {
             setIsProcessingPayment(false)
             setIsBookingConfirmed(true)
             onConfirm()
-        }, 3000)
+        })
     }
 
 
@@ -27,6 +36,8 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
             navigate("/booking-success")
         }
     }, [isBookingConfirmed, navigate])
+
+
 
     return (
         <div className='card card-body mt-5'>
@@ -52,22 +63,27 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
                         Total Payment: <strong>${payment}</strong>
                     </p>
                     {isFormValid && !isBookingConfirmed ? (
-                        <Button variant='success' onClick={handleConfirmBooking}>
-                            {isProcessingPayment ? (
-                                <>
-                                    <span
-                                        className='spinner-border spinner-border-sm mr-2'
-                                        role='status'
-                                        aria-hidden='true'
-                                        aria-label='Loading'>
-                                    </span>
-
-                                    Booking Corfirmed, redirecting to payment ...
-                                </>
-                            ) : (
-                                "Confirm Booking and proceed to payment"
-                            )}
-                        </Button>
+                        <PayPalScriptProvider options={{ "client-id": "AdwDrwu8oq4HnMX3qYyZtDxSDSXCl-HlxEqV4U4Lp5fBwX3fV4unuh1PI3alPpXM_5xGoR-AW2zttsOg" }}>
+                            <PayPalButtons
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: {
+                                                value: payment.toString(),
+                                            },
+                                        }],
+                                    })
+                                }}
+                                onApprove={handleApprove}
+                                onError={(err) => {
+                                    console.error("PayPal Checkout onError", err)
+                                    setIsProcessingPayment(false)
+                                }}
+                                onClick={() => {
+                                    setIsProcessingPayment(true)
+                                }}
+                            />
+                        </PayPalScriptProvider>
                     ) : isBookingConfirmed ? (
                         <div className='d-flex justify-content-center align-items-center'>
                             <div className='spinner-border text-primary' role='status'>

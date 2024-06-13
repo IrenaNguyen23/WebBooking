@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { deleteUser, getBookingsByUserId, getUser } from "../utils/ApiFunctions"
 import { useNavigate } from "react-router-dom"
 import moment from "moment"
+import { Backdrop, CircularProgress } from "@mui/material"
 
 const Profile = () => {
 	const [user, setUser] = useState({
@@ -81,7 +82,15 @@ const Profile = () => {
 	return (
 		<>
 			{isLoading ? (
-				<div>Loading user data... </div>
+				<>
+					<div>Loading user data... </div>
+					<Backdrop
+						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+						open={isLoading}
+					>
+						<CircularProgress color="inherit" />
+					</Backdrop>
+				</>
 			) : (
 				<div className="container">
 					{errorMessage && <p className="text-danger">{errorMessage}</p>}

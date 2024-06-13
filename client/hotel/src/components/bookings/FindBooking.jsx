@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import moment from "moment"
 import { cancelBooking, getBookingByConfirmationCode } from "../utils/ApiFunctions"
+import { Backdrop, CircularProgress } from "@mui/material"
 
 const FindBooking = () => {
 	const [confirmationCode, setConfirmationCode] = useState("")
@@ -100,36 +101,42 @@ const FindBooking = () => {
 				</form>
 
 				{isLoading ? (
-					<div>Finding your booking...</div>
+					<>
+						<div>Finding your booking...</div>
+						<Backdrop
+							sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+							open={isLoading}
+						>
+							<CircularProgress color="inherit" />
+						</Backdrop>
+					</>
 				) : error ? (
 					<div className="text-danger">Error: {error}</div>
 				) : bookingInfo.bookingConfirmationCode ? (
-					<div className="col-md-6 mt-4 mb-5">
+					<div className="container text-center my-3">
 						<h3>Booking Information</h3>
-						<p className="text-success">Confirmation Code: {bookingInfo.bookingConfirmationCode}</p>
-						<p>Room Number: {bookingInfo.room.id}</p>
-						<p>Room Type: {bookingInfo.room.roomType}</p>
-						<p>
-							Check-in Date:{" "}
-							{moment(bookingInfo.checkIndate).subtract(1, "month").format("MMM Do, YYYY")}
-						</p>
-						<p>
-							Check-out Date:{" "}
-							{moment(bookingInfo.checkOutdate).subtract(1, "month").format("MMM Do, YYYY")}
-						</p>
-						<p>Full Name: {bookingInfo.guestFullname}</p>
-						<p>Email Address: {bookingInfo.guestEmail}</p>
-						<p>Adults: {bookingInfo.numOfAdults}</p>
-						<p>Children: {bookingInfo.numOfChildren}</p>
-						<p>Total Guest: {bookingInfo.totalNumOfGuest}</p>
+						<div className="card">
+							<div className="card-body">
+								<p className="card-text text-success">Confirmation Code: {bookingInfo.bookingConfirmationCode}</p>
+								<p className="card-text">Room Number: {bookingInfo.room.id}</p>
+								<p className="card-text">Room Type: {bookingInfo.room.roomType}</p>
+								<p className="card-text">Check-in Date: {moment(bookingInfo.checkIndate).subtract(1, "month").format("MMM Do, YYYY")}</p>
+								<p className="card-text">Check-out Date: {moment(bookingInfo.checkOutdate).subtract(1, "month").format("MMM Do, YYYY")}</p>
+								<p className="card-text">Full Name: {bookingInfo.guestFullname}</p>
+								<p className="card-text">Email Address: {bookingInfo.guestEmail}</p>
+								<p className="card-text">Adults: {bookingInfo.numOfAdults}</p>
+								<p className="card-text">Children: {bookingInfo.numOfChildren}</p>
+								<p className="card-text">Total Guest: {bookingInfo.totalNumOfGuest}</p>
 
-						{!isDeleted && (
-							<button
-								onClick={() => handleBookingCancellation(bookingInfo.id)}
-								className="btn btn-danger">
-								Cancel Booking
-							</button>
-						)}
+								{!isDeleted && (
+									<button
+										onClick={() => handleBookingCancellation(bookingInfo.id)}
+										className="btn btn-danger mt-3">
+										Cancel Booking
+									</button>
+								)}
+							</div>
+						</div>
 					</div>
 				) : (
 					<div>find booking...</div>

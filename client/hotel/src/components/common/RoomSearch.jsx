@@ -62,7 +62,9 @@ const RoomSearch = () => {
     }
     return (
         <>
+       
             <Container className='mt-5 mt-5 py-5 shadow'>
+            <h5>Check Availability</h5>
                 <Form onSubmit={handleSearch}>
                     <Row className='justify-content-center'>
                         <Col xs={12} md={3}>

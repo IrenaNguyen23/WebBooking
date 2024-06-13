@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
 import { NavLink, Link } from "react-router-dom"
 import Logout from "../auth/Logout"
+import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 
 const NavBar = () => {
@@ -17,7 +18,8 @@ const NavBar = () => {
 		<nav className="navbar navbar-expand-lg bg-body-tertiary px-5 shadow mt-5 sticky-top">
 			<div className="container-fluid">
 				<Link to={"/"} className="navbar-brand">
-					<span className="hotel-color">lakeSide Hotel</span>
+					<LocationCityIcon color="secondary" sx={{ fontSize: 40 }} className="mx-2"/>
+					<span className="hotel-color">Irena Hotel</span>
 				</Link>
 
 				<button
@@ -36,6 +38,11 @@ const NavBar = () => {
 						<li className="nav-item">
 							<NavLink className="nav-link" aria-current="page" to={"/browse-all-rooms"}>
 								Browse all rooms
+							</NavLink>
+						</li>
+						<li className="nav-item">
+							<NavLink className="nav-link" aria-current="page" to={"/contact"}>
+								Contact
 							</NavLink>
 						</li>
 

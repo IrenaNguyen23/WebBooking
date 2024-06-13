@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { addRoom } from '../utils/ApiFunctions'
 import RoomTypeSelector from '../common/RoomTypeSelector'
 import { Link } from 'react-router-dom'
+import { Box, Button, TextField, Typography } from '@mui/material'
 const AddRoom = () => {
     const [newRoom, setNewRoom] = useState({
         photo: null,
@@ -17,12 +18,9 @@ const AddRoom = () => {
         const name = e.target.name;
         let value = e.target.value;
 
-        // Kiểm tra nếu trường là "roomPrice" và giá trị không phải là số
         if (name === "roomPrice" && isNaN(value)) {
-            // Gán giá trị thành rỗng để ngăn việc nhập kí tự không phải số
             value = "";
         } else if (name === "roomPrice" && !isNaN(value)) {
-            // Chuyển đổi giá trị thành số nguyên
             value = parseInt(value);
         }
 
@@ -57,7 +55,7 @@ const AddRoom = () => {
         }, 3000)
     }
 
-
+    console.log(newRoom)
     return (
         <>
             <section className='container mt-5 mb-5'>

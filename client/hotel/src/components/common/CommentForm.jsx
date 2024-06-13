@@ -6,7 +6,7 @@ const CommentForm = ({userId,roomId, fetchComment}) => {
     const [newComment, setNewComment] = useState({
         image: null,
         content: "",
-        rating: 0,
+        rating: 1,
         roomId : roomId,
         userId : userId
     })

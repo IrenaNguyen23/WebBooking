@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { cancelBooking, getAllBookings } from "../utils/ApiFunctions"
 import Header from "../common/Header"
 import BookingsTable from "./BookingsTable"
+import { Backdrop, CircularProgress } from "@mui/material"
 
 const Bookings = () => {
 	const [bookingInfo, setBookingInfo] = useState([])
@@ -37,7 +38,15 @@ const Bookings = () => {
 			<Header title={"Existing Bookings"} />
 			{error && <div className="text-danger">{error}</div>}
 			{isLoading ? (
+				<>
 				<div>Loading existing bookings</div>
+				<Backdrop
+						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+						open={isLoading}
+					>
+						<CircularProgress color="inherit" />
+					</Backdrop>
+				</>
 			) : (
 				<BookingsTable
 					bookingInfo={bookingInfo}
