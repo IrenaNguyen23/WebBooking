@@ -40,7 +40,6 @@ const Profile = () => {
 				console.error(error)
 			}
 		}
-
 		fetchUser()
 	}, [userId, token]);
 
@@ -83,13 +82,21 @@ const Profile = () => {
 		<>
 			{isLoading ? (
 				<>
-					<div>Loading user data... </div>
 					<Backdrop
-						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+						sx={{
+							color: '#fff',
+							zIndex: (theme) => theme.zIndex.drawer + 1,
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
 						open={isLoading}
 					>
 						<CircularProgress color="inherit" />
+						<h5 style={{ marginTop: '16px' }}>Loading...</h5>
 					</Backdrop>
+
 				</>
 			) : (
 				<div className="container">

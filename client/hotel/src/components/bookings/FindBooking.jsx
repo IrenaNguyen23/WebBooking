@@ -102,13 +102,20 @@ const FindBooking = () => {
 
 				{isLoading ? (
 					<>
-						<div>Finding your booking...</div>
 						<Backdrop
-							sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-							open={isLoading}
-						>
-							<CircularProgress color="inherit" />
-						</Backdrop>
+						sx={{
+							color: '#fff',
+							zIndex: (theme) => theme.zIndex.drawer + 1,
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
+						open={isLoading}
+					>
+						<CircularProgress color="inherit" />
+						<h5 style={{ marginTop: '16px' }}>Find your booking...</h5>
+					</Backdrop>
 					</>
 				) : error ? (
 					<div className="text-danger">Error: {error}</div>

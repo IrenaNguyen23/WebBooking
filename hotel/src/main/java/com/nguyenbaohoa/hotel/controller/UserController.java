@@ -25,7 +25,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<User>> getUsers(){
 
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.FOUND);
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{email}")

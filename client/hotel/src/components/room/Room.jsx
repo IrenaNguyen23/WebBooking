@@ -4,6 +4,7 @@ import RoomCard from './RoomCard'
 import { Col, Container, Row } from 'react-bootstrap'
 import RoomFilter from '../common/RoomFilter'
 import RoomPaginator from '../common/RoomPaginator'
+import { Backdrop, CircularProgress } from '@mui/material'
 
 const Room = () => {
     const [data, setData] = useState([])
@@ -26,7 +27,20 @@ const Room = () => {
     }, [])
     if (isLoading) {
         return <div>
-            Loading rooms.....
+            <Backdrop
+						sx={{
+							color: '#fff',
+							zIndex: (theme) => theme.zIndex.drawer + 1,
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
+						open={isLoading}
+					>
+						<CircularProgress color="inherit" />
+						<h5 style={{ marginTop: '16px' }}>Loading rooms...</h5>
+					</Backdrop>
         </div>
     }
     if (error) {

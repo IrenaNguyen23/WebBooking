@@ -67,26 +67,6 @@ public class BookedRoomServiceImpl implements BookedRoomSerivce{
             .orElseThrow(() -> new ResourceNotFoundException("Not Found Booking with confirmation code:" +confirmationCode));
     }
     
-    // private boolean roomIsAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
-    //     return existingBookings.stream().noneMatch(existingBooking ->
-    //         bookingRequest.getCheckInDate().equals(existingBooking.getCheckInDate())
-    //             || bookingRequest.getCheckOutDate().isBefore(existingBooking.getCheckOutDate())
-    //             || (bookingRequest.getCheckInDate().isAfter(existingBooking.getCheckInDate())
-    //             && bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckOutDate()))
-    //             || (bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckInDate())
-
-    //             && bookingRequest.getCheckOutDate().equals(existingBooking.getCheckOutDate()))
-    //             || (bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckInDate())
-                
-    //             && bookingRequest.getCheckOutDate().isBefore(existingBooking.getCheckOutDate()))
-
-    //             || (bookingRequest.getCheckInDate().equals(existingBooking.getCheckOutDate())
-    //             && bookingRequest.getCheckOutDate().equals(existingBooking.getCheckInDate()))
-
-    //             || (bookingRequest.getCheckInDate().equals(existingBooking.getCheckOutDate())
-    //             && bookingRequest.getCheckOutDate().equals(bookingRequest.getCheckInDate()))
-    //     );
-    // }
     private boolean roomIsAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
         return existingBookings.stream().noneMatch(existingBooking ->
             // Kiểm tra xem có sự chồng lấp giữa khoảng thời gian của bookingRequest và existingBooking không

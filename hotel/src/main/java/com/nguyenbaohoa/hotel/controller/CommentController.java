@@ -58,7 +58,7 @@ public class CommentController {
         } else {
             Comment savedComment = commentService.addNewCommentWithoutImage(userId, roomId, rating, content);
             CommentResponse response = new CommentResponse(savedComment.getId(), savedComment.getUser(),
-            savedComment.getRoom(), savedComment.getContent(), savedComment.getRating());
+                    savedComment.getRoom(), savedComment.getContent(), savedComment.getRating());
             return ResponseEntity.ok(response);
         }
 
@@ -90,19 +90,21 @@ public class CommentController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and #email == authentication.principal.username)")
     public ResponseEntity<String> deleteComment(@PathVariable("id") Long id, @RequestParam("email") String email) {
         try {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserEmail = authentication.getName(); // Lấy email của người dùng hiện tại
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUserEmail = authentication.getName(); // Lấy email của người dùng hiện tại
 
-        // Kiểm tra xem email của người dùng hiện tại có khớp với email truyền vào không
-        if (!currentUserEmail.equals(email)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You do not have permission to delete this comment");
+            // Kiểm tra xem email của người dùng hiện tại có khớp với email truyền vào không
+            if (!currentUserEmail.equals(email)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You do not have permission to delete this comment");
+            }
+
+            commentService.deleteComment(id);
+            return ResponseEntity.ok("Comment deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting comment: " + e.getMessage());
         }
-
-        commentService.deleteComment(id);
-        return ResponseEntity.ok("Comment deleted successfully");
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting comment: " + e.getMessage());
-    }
     }
 
     @PutMapping("/update-comment/{id}")
@@ -130,6 +132,18 @@ public class CommentController {
                 .map(this::getCommentResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(commentResponses);
+    }
+
+    @DeleteMapping("/delete/comment/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteComment(@PathVariable("id") Long id) {
+        try {
+            commentService.deleteComment(id);
+            return ResponseEntity.ok("Comment deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting comment: " + e.getMessage());
+        }
     }
 
     private CommentResponse getCommentResponse(Comment comment) {

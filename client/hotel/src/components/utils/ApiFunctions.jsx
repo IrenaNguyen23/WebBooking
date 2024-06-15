@@ -83,6 +83,26 @@ export async function deleteComment(id, email) {
 	}
 }
 
+export async function deleteCommentByAdmin(id) {
+	try {
+		const result = await api.delete(`/comments/delete/comment/${id}`, {
+			headers: getHeader()
+		});
+		return result.data;
+	} catch (error) {
+		throw new Error(`Error deleting comment: ${error.message}`);
+	}
+}
+
+export async function getAllComments() {
+	try {
+		const resuilt = await api.get("/comments/all-comments")
+		return resuilt.data
+	} catch (error) {
+		throw new Error("Error fetching comments")
+	}
+}
+
 export async function getRoomTypes() {
 	try {
 		const response = await api.get("/rooms/room/types")
@@ -100,6 +120,7 @@ export async function getAllRooms() {
 		throw new Error("Error fetching rooms")
 	}
 }
+
 
 export async function deleteRoom(roomId) {
 	try {
@@ -246,6 +267,17 @@ export async function deleteUser(userId) {
 export async function getUser(userId, token) {
 	try {
 		const response = await api.get(`/users/${userId}`, {
+			headers: getHeader()
+		})
+		return response.data
+	} catch (error) {
+		throw error
+	}
+}
+
+export async function getAllUsers() {
+	try {
+		const response = await api.get(`/users/all`, {
 			headers: getHeader()
 		})
 		return response.data
