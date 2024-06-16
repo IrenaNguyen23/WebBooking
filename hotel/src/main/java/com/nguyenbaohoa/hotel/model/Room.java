@@ -37,9 +37,14 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Gallery> galleries;
+
     public Room() {
         this.bookings = new ArrayList<>();
         this.comments = new ArrayList<>();
+        this.galleries = new ArrayList<>();
     }
 
     public void addBooking(BookedRoom booking){
@@ -60,4 +65,5 @@ public class Room {
         comments.add(comment);
         comment.setRoom(this);
     }
+
 }

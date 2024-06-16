@@ -102,7 +102,7 @@ public class CommentServiceImpl implements CommentService{
             try {
                 comment.setImage(new SerialBlob(photoBytes));
             } catch (SQLException ex) {
-                throw new InternalServerException("Error updating room");
+                throw new InternalServerException("Error updating comment");
             }
         }
         return commentRepository.save(comment);

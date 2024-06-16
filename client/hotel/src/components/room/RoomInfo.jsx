@@ -1,33 +1,46 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Carousel, Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { faWifi, faWaterLadder, faSnowflake, faBellConcierge, faAngleDown, faCheck, faPersonBiking, faCreditCard, faCircleCheck, faVolumeHigh, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
-const RoomInfo = ({ room, data }) => {
+const RoomInfo = ({ room, data, gallery }) => {
+    const defaultImage = 'https://th.bing.com/th/id/R.f4b66deaaa86e28f60f9c840815f36c6?rik=5LX3NDG%2fjPFapQ&pid=ImgRaw&r=0';
+
     return (
         <Container className="my-5">
             <Row>
                 <Col md={8}>
-                    <Carousel>
-                        {room.images.map((image, index) => (
-                            <Carousel.Item key={index}>
-                                <img
-                                    className="d-block w-100"
-                                    src={image}
-                                    alt={`Slide ${index}`}
-                                    style={{ maxHeight: '500px', objectFit: 'cover' }}
-                                />
-                            </Carousel.Item>
-                        ))}
-                    </Carousel>
+                <Carousel>
+                {(gallery && gallery.length > 0) ? (
+                    gallery.map((gallery, index) => (
+                        <Carousel.Item key={index}>
+                            <img
+                                className="d-block w-100"
+                                src={`data:image/jpeg;base64,${gallery.image}`}
+                                alt={`Slide ${index}`}
+                                style={{ maxHeight: '500px', objectFit: 'cover' }}
+                            />
+                        </Carousel.Item>
+                    ))
+                ) : (
+                    <Carousel.Item>
+                        <img
+                            className="d-block w-100"
+                            src={defaultImage}
+                            alt="No Image Available"
+                            style={{ maxHeight: '500px', objectFit: 'cover' }}
+                        />
+                    </Carousel.Item>
+                )}
+            </Carousel>
                 </Col>
                 <Col md={4}>
                     <h3>{data.roomType}</h3>
                     <p>{room.description}</p>
                     <h5>Details</h5>
                     <ul className="list-unstyled">
-                        <li>Price per night: ${data.price}</li>
+                        <li>Price per night: ${data.roomPrice}</li>
                         <li>Size: {room.size} sqm</li>
                         <li>Max Guests: {room.maxGuests}</li>
                         <li>Bed Type: {room.bedType}</li>

@@ -19,6 +19,7 @@ const RoomDetail = () => {
     const [menuOpen, setMenuOpen] = useState(null); // State để xác định trạng thái menu dropdown
     const [editingComment, setEditingComment] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [galleries,setGalleries] =useState([]);
 
 
     const { roomId } = useParams();
@@ -47,6 +48,7 @@ const RoomDetail = () => {
             try {
                 const roomData = await getRoomById(roomId);
                 setRoom(roomData);
+                setGalleries(roomData.galleries);
             } catch (error) {
                 console.error(error);
             }
@@ -79,6 +81,7 @@ const RoomDetail = () => {
             console.error(error);
         }
     };
+    
 
     const handleShowMoreComments = () => {
         setShowMoreComments(true);
@@ -147,7 +150,7 @@ const RoomDetail = () => {
     };
     return (
         <section className='container'>
-            <RoomInfo room={sampleRoom} data={room} />
+            <RoomInfo room={sampleRoom} data={room} gallery={galleries} />
             <h1 className='font-semibold text-lg pb-4'>Recent Review & Rating</h1>
             <div className='border my-4 p-5'>
                 <Row>

@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.nguyenbaohoa.hotel.exception.PhotoRetrievalExcetion;
+import com.nguyenbaohoa.hotel.exception.PhotoRetrievalException;
 import com.nguyenbaohoa.hotel.exception.ResourceNotFoundException;
 import com.nguyenbaohoa.hotel.model.Comment;
 import com.nguyenbaohoa.hotel.model.Room;
@@ -126,7 +126,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponse>> getCommentsByRoomId(@PathVariable Long roomId) {
         List<Comment> comments = commentService.getCommentsByRoomId(roomId);
         if (comments.isEmpty()) {
-            throw new ResourceNotFoundException("Room not found");
+            throw new ResourceNotFoundException("Comment not found");
         }
         List<CommentResponse> commentResponses = comments.stream()
                 .map(this::getCommentResponse)
@@ -167,7 +167,7 @@ public class CommentController {
             try {
                 photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
             } catch (SQLException e) {
-                throw new PhotoRetrievalExcetion("Error retrieving photo");
+                throw new PhotoRetrievalException("Error retrieving photo");
             }
         }
         return new CommentResponse(comment.getId(), comment.getUser(), comment.getRoom(), comment.getContent(),

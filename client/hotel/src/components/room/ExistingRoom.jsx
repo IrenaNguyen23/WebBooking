@@ -89,7 +89,7 @@ const ExistingRoom = () => {
                         {errorMessage &&
                             <div className='alert alert-danger fade show'>{errorMessage}</div>
                         }
-                            <h2>Existing Rooms</h2>
+                            <h2>Manager Rooms</h2>
                             
                         </div>
                         <Row>
@@ -121,7 +121,7 @@ const ExistingRoom = () => {
                                         <td>{room.roomType}</td>
                                         <td>{room.roomPrice}</td>
                                         <td className='gap-2'>
-                                            <Link to={`/edit-room/${room.id}`}>
+                                            <Link to={`/admin/edit-room/${room.id}`}>
                                                 <span className='btn btn-info btn-sm'>
                                                     <FaEye />
                                                 </span>
