@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nguyenbaohoa.hotel.model.Room;
 
 public interface RoomService {
-    Room addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SerialException, SQLException;
+    Room addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice, String name, String description) throws IOException, SerialException, SQLException;
 
     List<String> getAllRoomTypes();
 
@@ -24,7 +24,7 @@ public interface RoomService {
 
     void deleteRoom(Long roomId);
 
-    Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes);
+    Room updateRoom(Long roomId, String name, String description, String roomType, BigDecimal roomPrice, byte[] photoBytes);
 
     Optional<Room> getRoomById(Long roomId);
 

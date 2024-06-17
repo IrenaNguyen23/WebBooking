@@ -56,10 +56,13 @@ public class RoomController {
     public ResponseEntity<RoomResponse> addNewRoom(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("roomType") String roomType,
-            @RequestParam("roomPrice") BigDecimal roomPrice) throws IOException, SQLException {
-        Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice);
-        RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(),
-                savedRoom.getRoomPrice());
+            @RequestParam("roomPrice") BigDecimal roomPrice,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description) throws IOException, SQLException {
+        Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice, name, description);
+        RoomResponse response = new RoomResponse(savedRoom.getId(),
+                savedRoom.getName(), savedRoom.getDescription(),
+                savedRoom.getRoomType(), savedRoom.getRoomPrice());
         return ResponseEntity.ok(response);
     }
 
@@ -94,6 +97,8 @@ public class RoomController {
     @PutMapping("/update/{roomId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
             @RequestParam(required = false) String roomType,
             @RequestParam(required = false) BigDecimal roomPrice,
             @RequestParam(required = false) MultipartFile photo) throws IOException, SQLException {
@@ -101,7 +106,7 @@ public class RoomController {
         byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes()
                 : roomService.getRoomPhotoByRoomId(roomId);
         Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
-        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
+        Room theRoom = roomService.updateRoom(roomId, name, description, roomType, roomPrice, photoBytes);
         theRoom.setPhoto(photoBlob);
         RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);
@@ -150,22 +155,22 @@ public class RoomController {
 
         List<Gallery> galleries = getAllGalleriesByRoomId(room.getId());
         List<GalleryResponse> images = galleries.stream()
-            .map(gallery -> {
-                byte[] photoBytes = null;
-                Blob photoBlob = gallery.getImage();
-                if (photoBlob != null) {
-                    try {
-                        photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
-                    } catch (SQLException e) {
-                        throw new PhotoRetrievalException("Error retrieving gallery photo");
+                .map(gallery -> {
+                    byte[] photoBytes = null;
+                    Blob photoBlob = gallery.getImage();
+                    if (photoBlob != null) {
+                        try {
+                            photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
+                        } catch (SQLException e) {
+                            throw new PhotoRetrievalException("Error retrieving gallery photo");
+                        }
                     }
-                }
-                return new GalleryResponse(
-                        gallery.getId(),
-                        photoBytes,
-                        gallery.getRoom());
-            })
-            .collect(Collectors.toList());
+                    return new GalleryResponse(
+                            gallery.getId(),
+                            photoBytes,
+                            gallery.getRoom());
+                })
+                .collect(Collectors.toList());
 
         byte[] photoBytes = null;
         Blob photoBlob = room.getPhoto();
@@ -177,8 +182,9 @@ public class RoomController {
             }
         }
         return new RoomResponse(room.getId(),
+                room.getName(), room.getDescription(),
                 room.getRoomType(), room.getRoomPrice(),
-                room.isBooked(), photoBytes, images ,bookingInfo);
+                room.isBooked(), photoBytes, images, bookingInfo);
     }
 
     private List<Gallery> getAllGalleriesByRoomId(Long id) {

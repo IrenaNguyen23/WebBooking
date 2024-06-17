@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { Box, CssBaseline, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashBoard from './Components/DashBoard';
 import ExistingRoom from '../room/ExistingRoom';
 import Bookings from '../bookings/Bookings';
 import EditRoom from '../room/EditRoom';
 import Guest from './Components/Guest';
 import Review from './Components/Review';
+import AddRoom from '../room/AddRoom';
+import Gallery from './Components/Gallery';
 
 const menu = [
   { name: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
   { name: "Room", path: "/admin/room", icon: <DashboardIcon /> },
   { name: "Booking", path: "/admin/booking", icon: <DashboardIcon /> },
   { name: "Guest", path: "/admin/guest", icon: <DashboardIcon /> },
-  { name: "Review", path: "/admin/review", icon: <DashboardIcon /> }
+  { name: "Review", path: "/admin/review", icon: <DashboardIcon /> },
+  { name: "Gallery", path: "/admin/gallery", icon: <DashboardIcon /> }
 
 ]
 
@@ -79,11 +81,13 @@ const Admin = () => {
         <Box className="adminContainer" component={"main"} sx={{flexGrow:1}}>
           <Routes>
             <Route path='/' element={<DashBoard/>}></Route>
+            <Route path='/add-room' element={<AddRoom />} />
             <Route path='/room' element={<ExistingRoom/>}></Route>
             <Route path='/booking' element={<Bookings/>}></Route>
             <Route path='/edit-room/:roomId' element={<EditRoom />} />
             <Route path='/guest' element={<Guest/>}></Route>
             <Route path='/review' element={<Review/>}></Route>
+            <Route path='/gallery' element={<Gallery/>}></Route>
           </Routes>
         </Box>
 

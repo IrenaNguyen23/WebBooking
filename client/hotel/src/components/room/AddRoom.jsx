@@ -2,9 +2,27 @@ import React, { useState } from 'react'
 import { addRoom } from '../utils/ApiFunctions'
 import RoomTypeSelector from '../common/RoomTypeSelector'
 import { Link } from 'react-router-dom'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { InputLabel } from '@mui/material';
+
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
+
 const AddRoom = () => {
     const [newRoom, setNewRoom] = useState({
+        name: "",
+        description: "",
         photo: null,
         roomType: "",
         roomPrice: ""
@@ -37,10 +55,10 @@ const AddRoom = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice)
+            const success = await addRoom(newRoom.name, newRoom.description, newRoom.photo, newRoom.roomType, newRoom.roomPrice)
             if (success !== undefined) {
                 setSuccesMessage("A new room was added successfully")
-                setNewRoom({ photo: null, roomType: "", roomPrice: "" })
+                setNewRoom({ name: "", description: "", photo: null, roomType: "", roomPrice: "" })
                 setImagePreview("")
                 setErrorMessage("")
             } else {
@@ -71,6 +89,34 @@ const AddRoom = () => {
 
                         <form onSubmit={handleSubmit}>
                             <div className='mb-3'>
+                                <label htmlFor="name" className='form-label'>
+                                    Room Name
+                                </label>
+                                <input
+                                    className='form-control'
+                                    required
+                                    id='name'
+                                    type='text'
+                                    name='name'
+                                    value={newRoom.name}
+                                    onChange={handleRoomInputChange} />
+                            </div>
+
+                            <div className='mb-3'>
+                                <label htmlFor="description" className='form-label'>
+                                    Description
+                                </label>
+                                <textarea
+                                    className='form-control'
+                                    required
+                                    id='description'
+                                    type='text'
+                                    name='description'
+                                    value={newRoom.description}
+                                    onChange={handleRoomInputChange} />
+                            </div>
+
+                            <div className='mb-3'>
                                 <label htmlFor="roomType" className='form-label'>
                                     Room Type
                                 </label>
@@ -94,15 +140,20 @@ const AddRoom = () => {
                             </div>
 
                             <div className='mb-3'>
-                                <label htmlFor="photo" className='form-label'>
+                                <InputLabel htmlFor="photo" className='form-label'>
                                     Room Photo
-                                </label>
-                                <input
-                                    id="photo"
-                                    className='form-control'
-                                    type="file"
-                                    name="photo"
-                                    onChange={handleImageChange} />
+                                </InputLabel>
+                                <Button
+                                    component="label"
+                                    role={undefined}
+                                    variant="contained"
+                                    tabIndex={-1}
+                                    startIcon={<CloudUploadIcon />}
+                                >
+                                    Choose file
+                                    <VisuallyHiddenInput id="photo" name="photo" className='form-control'
+                                        onChange={handleImageChange} type="file" />
+                                </Button>
                                 {imagePreview && (
                                     <img src={imagePreview}
                                         alt='Preview Room Photo'

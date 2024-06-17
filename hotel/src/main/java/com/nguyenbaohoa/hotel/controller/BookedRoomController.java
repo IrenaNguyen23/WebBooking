@@ -88,6 +88,8 @@ public class BookedRoomController {
         Room theRoom = roomService.getRoomById(booking.getRoom().getId()).get();
         RoomResponse room  = new RoomResponse(
             theRoom.getId(),
+            theRoom.getName(),
+            theRoom.getDescription(),
             theRoom.getRoomType(),
             theRoom.getRoomPrice());
         return new BookingResponse(

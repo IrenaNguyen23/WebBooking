@@ -11,8 +11,10 @@ export const getHeader = () => {
 	}
 }
 
-export async function addRoom(photo, roomType, roomPrice) {
+export async function addRoom(name, description, photo, roomType, roomPrice) {
 	const formData = new FormData();
+	formData.append("name", name);
+	formData.append("description", description);
 	formData.append("photo", photo);
 	formData.append("roomType", roomType);
 	formData.append("roomPrice", roomPrice);
@@ -37,6 +39,29 @@ export async function addRoom(photo, roomType, roomPrice) {
 	}
 }
 
+export async function updateRoom(roomId, roomData) {
+	const formData = new FormData()
+	formData.append("name", roomData.name)
+	formData.append("description", roomData.description)
+	formData.append("roomType", roomData.roomType)
+	formData.append("roomPrice", roomData.roomPrice)
+	formData.append("photo", roomData.photo)
+
+	const headers = { ...getHeader() };
+	delete headers['Content-Type'];
+
+	try {
+		const response = await api.put(`/rooms/update/${roomId}`, formData, {
+			headers: headers
+		});
+
+		return response;
+	} catch (error) {
+		console.error('Error update room:', error);
+		return false;
+	}
+}
+
 export async function addComment(image, content, rating, roomId, userId) {
 	const formData = new FormData()
 	formData.append("image", image);
@@ -50,6 +75,28 @@ export async function addComment(image, content, rating, roomId, userId) {
 		return true
 	} else {
 		return false
+	}
+}
+
+export async function addGallery(image, roomId) {
+	const formData = new FormData()
+	formData.append("image", image);
+	formData.append("roomId", roomId)
+
+	const response = await api.post("/galleries/add/gallery", formData,)
+	if (response.status === 200) {
+		return true
+	} else {
+		return false
+	}
+}
+
+export async function deleteGallery(id) {
+	try {
+		const result = await api.delete(`/galleries/delete/gallery/${id}`, )
+		return result.data;
+	} catch (error) {
+		throw new Error(`Error deleting comment: ${error.message}`);
 	}
 }
 
@@ -103,6 +150,15 @@ export async function getAllComments() {
 	}
 }
 
+export async function getAllGalleries() {
+	try {
+		const resuilt = await api.get("/galleries/all-galleries")
+		return resuilt.data
+	} catch (error) {
+		throw new Error("Error fetching gallery")
+	}
+}
+
 export async function getRoomTypes() {
 	try {
 		const response = await api.get("/rooms/room/types")
@@ -133,16 +189,6 @@ export async function deleteRoom(roomId) {
 	}
 }
 
-export async function updateRoom(roomId, roomData) {
-	const formData = new FormData()
-	formData.append("roomType", roomData.roomType)
-	formData.append("roomPrice", roomData.roomPrice)
-	formData.append("photo", roomData.photo)
-	const response = await api.put(`/rooms/update/${roomId}`, formData, {
-		headers: getHeader()
-	})
-	return response
-}
 
 export async function getRoomById(roomId) {
 	try {

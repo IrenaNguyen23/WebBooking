@@ -151,6 +151,7 @@ public class CommentController {
         List<RoomResponse> roomInfo = rooms
                 .stream()
                 .map(room -> new RoomResponse(room.getId(),
+                        room.getName(), room.getDescription(),
                         room.getRoomType(), room.getRoomPrice()))
                 .toList();
         List<User> users = getUserByUserId(comment.getUser().getId());

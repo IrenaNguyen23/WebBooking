@@ -99,7 +99,7 @@ const PopularRoom = () => {
                                             </ul>
                                         </div>
                                         <h5 className="card-title mb-0 me-5">                                        
-                                                Pride moon Village Resort & Spa
+                                                {room.name}
                                         </h5>
                                         <small>
                                             <FaMapMarkerAlt className="me-1 mb-1" />

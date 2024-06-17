@@ -154,7 +154,7 @@ const Review = () => {
               <div className="col-md-8">
                 <div className="card-body">
                   <Rating value={comment.rating} name='half-rating' readOnly precision={0.5} />
-                  <p className="card-text">Review on room: <strong>{comment.roomInfo[0].roomType}</strong></p>
+                  <p className="card-text">Review on room: <strong>{comment.roomInfo[0].name}</strong></p>
                   <button className="btn btn-sm btn-danger-soft px-2 mb-0" style={{ float: 'right', cursor: 'pointer' }} onClick={() => {
                     setCommentIdToDelete(comment.id);
                     setShowModal({ ...showModal, [comment.id]: true });

@@ -24,7 +24,6 @@ const Home = () => {
 				<RoomSearch />
 				<RoomCarousel />
 				<OffersCarousel/>
-				<RoomCarousel />
 				<HotelService />
 				<Parallax />
 			</div>

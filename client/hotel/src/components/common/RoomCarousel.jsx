@@ -13,7 +13,9 @@ const RoomCarousel = () => {
     useEffect(() => {
         setIsLoading(true)
         getAllRooms().then((data) => {
-            setRooms(data)
+            const sortedRooms = data.sort((a, b) => b.bookings.length - a.bookings.length);
+            const topRooms = sortedRooms.slice(0,8);
+            setRooms(topRooms)
             setIsLoading(false)
         }).catch((error) => {
             setErrorMessage(error.message)
@@ -30,6 +32,7 @@ const RoomCarousel = () => {
     return (
         <section className='bg-light mb-5 mt-5 shadow'>
             <Container>
+                <h1 className='text-center'>Featured Hotels</h1>
                 <Carousel indicators={false}>
                     {[...Array(Math.ceil(rooms.length / 4))].map((_, index) => (
                         <Carousel.Item key={index}>
@@ -45,7 +48,8 @@ const RoomCarousel = () => {
                                                     style={{ height: "300px" }} />
                                             </Link>
                                             <Card.Body>
-                                                <Card.Title className='hotel-color'>{room.roomType}</Card.Title>
+                                                <Card.Title className='hotel-color'>{room.name}</Card.Title>
+                                                <Card.Subtitle className='my-2'>{room.roomType}</Card.Subtitle>
                                                 <Card.Title className='room-price'>${room.roomPrice} / Night</Card.Title>
                                                 <div className='flex-shrink-0 mt-3'>
                                                     <Link to={`/book-room/${room.id}`} className='btn btn-hotel btn-sm'>

@@ -10,7 +10,6 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,14 +34,13 @@ public class GalleryController {
     private final GalleryService galleryService;
 
     @PostMapping("/add/gallery")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<GalleryResponse> createGallery(
             @RequestParam("image") MultipartFile image,
             @RequestParam("roomId") Long roomId) throws Exception {
         Gallery savedGallery = galleryService.createGallery(image, roomId);
         GalleryResponse response = new GalleryResponse(savedGallery.getId(),savedGallery.getRoom());
         return ResponseEntity.ok(response);
-  
     }
 
     @GetMapping("/all-galleries")
@@ -62,7 +60,7 @@ public class GalleryController {
     }
 
     @PutMapping("/update/gallery/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<GalleryResponse> updateGallery(
             @PathVariable Long id,
             @RequestParam(required = false) MultipartFile image) throws Exception {
@@ -76,7 +74,7 @@ public class GalleryController {
     }
 
     @DeleteMapping("/delete/gallery/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteGallery(@PathVariable Long id) {
         galleryService.deleteGallery(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

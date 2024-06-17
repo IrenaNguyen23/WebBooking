@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from '../layout/NavBar';
 import Home from '../home/Home';
-import AddRoom from '../room/AddRoom';
 import RequireAuth from '../auth/RequireAuth';
 import CheckOut from '../bookings/CheckOut';
 import RoomListing from '../room/RoomListing';
@@ -23,7 +22,6 @@ const CustomerRoutes = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/contact' element={<ContactForm />} />
-        <Route path='/add-room' element={<AddRoom />} />
         <Route
           path="/book-room/:roomId"
           element={

@@ -97,7 +97,7 @@ const ExistingRoom = () => {
                                 <RoomFilter data={rooms} setFilteredData={setFilteredRoom} />
                             </Col>
                             <Col md={6} className='d-flex justify-content-end'>
-                            <Link to={"/add-room"}>
+                            <Link to={"/admin/add-room"}>
                                 <FaPlus /> Add Room
                             </Link>
                             </Col>
@@ -109,6 +109,8 @@ const ExistingRoom = () => {
                                     <th>
                                         ID
                                     </th>
+                                    <th>Room Name</th>
+                                    <th>Description</th>
                                     <th>Room Type</th>
                                     <th>Room Price</th>
                                     <th>Actions</th>
@@ -118,6 +120,8 @@ const ExistingRoom = () => {
                                 {currentRooms.map((room) => (
                                     <tr key={room.id} className='text-center'>
                                         <td>{room.id}</td>
+                                        <td>{room.name}</td>
+                                        <td>{room.description}</td>
                                         <td>{room.roomType}</td>
                                         <td>{room.roomPrice}</td>
                                         <td className='gap-2'>

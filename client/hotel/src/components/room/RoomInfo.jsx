@@ -36,14 +36,14 @@ const RoomInfo = ({ room, data, gallery }) => {
             </Carousel>
                 </Col>
                 <Col md={4}>
-                    <h3>{data.roomType}</h3>
+                    <h3>{data.name}</h3>
                     <p>{room.description}</p>
                     <h5>Details</h5>
                     <ul className="list-unstyled">
                         <li>Price per night: ${data.roomPrice}</li>
                         <li>Size: {room.size} sqm</li>
                         <li>Max Guests: {room.maxGuests}</li>
-                        <li>Bed Type: {room.bedType}</li>
+                        <li>Bed Type: {data.roomType}</li>
                     </ul>
                     <h5>Amenities</h5>
                     <ul className="list-unstyled">

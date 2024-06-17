@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { getRoomById, updateRoom } from '../utils/ApiFunctions'
 import { Link, useParams } from 'react-router-dom'
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { InputLabel } from '@mui/material';
+
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 
 const EditRoom = () => {
     const [room, setRoom] = useState({
+        name: "",
+        description: "",
         photo: null,
         roomType: "",
         roomPrice: ""
@@ -55,7 +73,10 @@ const EditRoom = () => {
         } catch (error) {
             console.error(error)
             setErrorMessage(error.message)
-        }
+        } setTimeout(() => {
+            setSuccesMessage("")
+            setErrorMessage("")
+        }, 3000)
     }
 
 
@@ -72,6 +93,34 @@ const EditRoom = () => {
                     }
 
                     <form onSubmit={handleSubmit}>
+                        <div className='mb-3'>
+                            <label htmlFor="name" className='form-label hotel-color'>
+                                Room Name
+                            </label>
+                            <input
+                                className='form-control'
+                                required
+                                id='name'
+                                type='text'
+                                name='name'
+                                value={room.name}
+                                onChange={handleInputChange} />
+                        </div>
+
+                        <div className='mb-3'>
+                            <label htmlFor="description" className='form-label hotel-color'>
+                                Description
+                            </label>
+                            <textarea
+                                className='form-control'
+                                required
+                                id='description'
+                                type='text'
+                                name='description'
+                                value={room.description}
+                                onChange={handleInputChange} />
+                        </div>
+
                         <div className='mb-3'>
                             <label htmlFor="roomType" className='form-label hotel-color'>
                                 Room Type
@@ -101,15 +150,21 @@ const EditRoom = () => {
                         </div>
 
                         <div className='mb-3'>
-                            <label htmlFor="photo" className='form-label hotel-color'>
+                            <InputLabel htmlFor="photo" className='form-label hotel-color'>
                                 Room Photo
-                            </label>
-                            <input
-                                id="photo"
-                                className='form-control'
-                                type="file"
-                                name="photo"
-                                onChange={handleImageChange} />
+                            </InputLabel>
+                            <Button
+                                component="label"
+                                role={undefined}
+                                variant="contained"
+                                tabIndex={-1}
+                                startIcon={<CloudUploadIcon />}
+                            >
+                                Choose file
+                                <VisuallyHiddenInput id="photo" name="photo"
+                                    onChange={handleImageChange} type="file" />
+                            </Button>
+
                             {imagePreview && (
                                 <img src={`data:image/jpeg;base64,${imagePreview}`}
                                     alt='Preview Room Photo'
@@ -117,9 +172,10 @@ const EditRoom = () => {
                                     className='mb-3' />
                             )}
                         </div>
+
                         <div className='d-grid d-md-flex mt-2'>
                             <Link className='btn btn-outline-info ml-5' to={"/existing-rooms"}>
-                            Back
+                                Back
                             </Link>
                             <button className="btn btn-outline-warning" type='submit'>
                                 Edit Room

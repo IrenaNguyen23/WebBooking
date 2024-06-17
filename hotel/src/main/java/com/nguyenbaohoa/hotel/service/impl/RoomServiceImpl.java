@@ -27,10 +27,12 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
 
     @Override
-    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws IOException, SerialException, SQLException {
+    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice, String name, String description) throws IOException, SerialException, SQLException {
         Room room = new Room();
         room.setRoomType(roomType);
         room.setRoomPrice(roomPrice);
+        room.setName(name);
+        room.setDescription(description);
         if (!file.isEmpty()) {
             byte[] photoBytes = file.getBytes();
             Blob photoBlob = new SerialBlob(photoBytes);
@@ -72,8 +74,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
+    public Room updateRoom(Long roomId, String name, String description, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
         Room room = roomRepository.findById(roomId).orElseThrow(()-> new ResourceNotFoundException("Room not found"));
+        if(name != null) room.setName(name);
+        if(description != null) room.setDescription(description);
         if(roomType != null) room.setRoomType(roomType);
         if(roomPrice != null) room.setRoomPrice(roomPrice);
         if(photoBytes != null && photoBytes.length >0){
