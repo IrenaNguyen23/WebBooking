@@ -4,26 +4,39 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import DeleteIcon from '@mui/icons-material/Delete';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 
 
 const Gallery = () => {
     const [galleries, setGalleries] = useState([]);
     const [rooms, setRooms] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState('');
-    const [selectedFileName, setSelectedFileName] = useState('');
+    const [selectedFileNames, setSelectedFileNames] = useState([]);
     const [open, setOpen] = useState(false);
+
+    const [page, setPage] = useState(1); // Trang hiện tại
+    const [pageSize, setPageSize] = useState(20); // Số lượng mục trên mỗi trang
+    const [totalItems, setTotalItems] = useState(0); // Tổng số mục
 
     useEffect(() => {
         fetchGalleries();
-        fetchRooms()
-    }, []);
+        fetchRooms();
+    }, [page, pageSize]);
+
 
     const fetchGalleries = async () => {
         try {
-            const galleries = await getAllGalleries()
-            setGalleries(galleries)
+            const allGalleries = await getAllGalleries()
+            const total = allGalleries.length;
+            const start = (page - 1) * pageSize;
+            const end = start + pageSize;
+            const slicedGalleries = allGalleries.slice(start, end);
+
+            setGalleries(slicedGalleries);
+            setTotalItems(total);
         } catch (error) {
             console.error(error);
         }
@@ -39,9 +52,9 @@ const Gallery = () => {
     }
 
     const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        setSelectedFileName(file.name); 
+        const files = Array.from(event.target.files);
+        setSelectedFiles(files);
+        setSelectedFileNames(files.map(file => file.name));
     };
 
     const handleRoomChange = (event) => {
@@ -49,18 +62,20 @@ const Gallery = () => {
     };
 
     const handleUpload = async () => {
-        if (!selectedFile || !selectedRoom) {
-            alert('Please select a file and a room.');
+        if (!selectedFiles.length || !selectedRoom) {
+            alert('Please select files and a room.');
             return;
         }
 
         try {
-            const success = await addGallery(selectedFile, selectedRoom);
+            const success = await addGallery(selectedFiles, selectedRoom);
             if (success) {
                 fetchGalleries(); // Refresh the gallery after upload
+                setSelectedFiles([]);
+                setSelectedFileNames([]);
                 handleClose(); // Đóng modal sau khi upload thành công
             } else {
-                alert('Failed to upload image.');
+                alert('Failed to upload images.');
             }
         } catch (error) {
             console.error(error);
@@ -87,13 +102,21 @@ const Gallery = () => {
 
     const handleClose = () => {
         setOpen(false);
-        setSelectedFile(null);
+        setSelectedFiles(null);
         setSelectedRoom('');
     };
 
     const getRoomName = (roomId) => {
         const room = rooms.find(room => room.id === roomId);
         return room ? room.name : '';
+    };
+
+    const handleNextPage = () => {
+        setPage(page + 1);
+    };
+
+    const handlePrevPage = () => {
+        setPage(page - 1);
     };
     return (
         <div className='container-fluid'>
@@ -126,9 +149,10 @@ const Gallery = () => {
                         component="label"
                         sx={{ mt: 2 }}
                     >
-                        {selectedFileName ? selectedFileName : 'Choose File'}
+                         {selectedFileNames.length > 0 ? selectedFileNames.join(', ') : 'Choose Files'}
                         <input
                             type="file"
+                            multiple
                             hidden
                             onChange={handleFileChange}
                         />
@@ -143,21 +167,19 @@ const Gallery = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-
-        <ImageList cols={4} sx={{
-            width: 'auto',
-            height: 'auto',
-            overflowY: 'auto',
-        }}>
-            {galleries.map((item) => (
-                <ImageListItem key={item.id}>
-                    <img
-                        src={`data:image/jpeg;base64,${item.image}`} // Hiển thị blob base64 trực tiếp
-                        alt={item.title}
-                        loading="lazy"
-                    />
-                    <ImageListItemBar
+            <ImageList cols={5} sx={{
+                width: 'auto',
+                height: 'auto',
+                overflowY: 'auto',
+            }}>
+                {galleries.map((item) => (
+                    <ImageListItem key={item.id}>
+                        <img
+                            src={`data:image/jpeg;base64,${item.image}`} // Hiển thị blob base64 trực tiếp
+                            alt={item.title}
+                            loading="lazy"
+                        />
+                        <ImageListItemBar
                             title={getRoomName(item.roomId)}
                             actionIcon={
                                 <IconButton
@@ -169,9 +191,14 @@ const Gallery = () => {
                                 </IconButton>
                             }
                         />
-                </ImageListItem>
-            ))}
-        </ImageList>
+                    </ImageListItem>
+                ))}
+            </ImageList>
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <Button onClick={handlePrevPage} disabled={page === 1}><NavigateBeforeIcon/></Button>
+                <span style={{ margin: '0 10px' }}>{page}</span>
+                <Button onClick={handleNextPage} disabled={page * pageSize >= totalItems}><NavigateNextIcon/></Button>
+            </div>
         </div>
     )
 }

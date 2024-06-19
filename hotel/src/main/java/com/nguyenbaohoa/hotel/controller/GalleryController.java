@@ -35,12 +35,12 @@ public class GalleryController {
 
     @PostMapping("/add/gallery")
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<GalleryResponse> createGallery(
-            @RequestParam("image") MultipartFile image,
+    public ResponseEntity<List<GalleryResponse>> createGallery(
+            @RequestParam("images") List<MultipartFile> images,
             @RequestParam("roomId") Long roomId) throws Exception {
-        Gallery savedGallery = galleryService.createGallery(image, roomId);
-        GalleryResponse response = new GalleryResponse(savedGallery.getId(),savedGallery.getRoom());
-        return ResponseEntity.ok(response);
+
+        List<GalleryResponse> responses = galleryService.createGallery(images, roomId);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/all-galleries")

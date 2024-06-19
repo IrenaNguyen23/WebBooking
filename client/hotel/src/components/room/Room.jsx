@@ -15,32 +15,35 @@ const Room = () => {
     const [filteredData, setFilteredData] = useState([{ id: "" }])
 
     useEffect(() => {
-        setIsLoading(true)
-        getAllRooms().then((data) => {
-            setData(data)
-            setFilteredData(data)
-            setIsLoading(false)
-        }).catch((error) => {
-            setError(error.message)
-            setIsLoading(false)
-        })
-    }, [])
+        setIsLoading(true);
+        getAllRooms()
+            .then((data) => {
+                setData(data); 
+                setFilteredData(data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setIsLoading(false);
+            });
+    }, []);
+
     if (isLoading) {
         return <div>
             <Backdrop
-						sx={{
-							color: '#fff',
-							zIndex: (theme) => theme.zIndex.drawer + 1,
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							justifyContent: 'center'
-						}}
-						open={isLoading}
-					>
-						<CircularProgress color="inherit" />
-						<h5 style={{ marginTop: '16px' }}>Loading rooms...</h5>
-					</Backdrop>
+                sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+                open={isLoading}
+            >
+                <CircularProgress color="inherit" />
+                <h5 style={{ marginTop: '16px' }}>Loading rooms...</h5>
+            </Backdrop>
         </div>
     }
     if (error) {
@@ -51,13 +54,13 @@ const Room = () => {
         setCurrentPage(pageNumber)
     }
     const totalPages = Math.ceil(filteredData.length / roomsPerPage)
+
     const renderRooms = () => {
         const startIndex = (currentPage - 1) * roomsPerPage
         const endIndex = startIndex + roomsPerPage
         return filteredData.slice(startIndex, endIndex)
             .map((room) => <RoomCard key={room.id} room={room} />)
-    }
-
+    };
     return (
         <Container>
             <Row>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
+import DiamondIcon from '@mui/icons-material/Diamond';
 import BusinessIcon from '@mui/icons-material/Business';
 import FlightIcon from '@mui/icons-material/Flight';
 import PublicIcon from '@mui/icons-material/Public';
@@ -19,8 +19,9 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4 mb-3">
-            <LocationCityIcon color="secondary" sx={{ fontSize: 40 }} className="mx-2" />
-            <h5 className="hotel-color">Irena Hotel</h5>
+            <Link to={"/"} className="navbar-brand">
+              <img src="https://diamant.kwst.net/site/images/logo2.png" alt="" width={150} />
+            </Link>
             <p>Departure defective arranging rapturous did believe him all had supported.</p>
             <ul className="list-unstyled my-3">
               <li><LocalPhoneOutlinedIcon />: +123 456 7890</li>

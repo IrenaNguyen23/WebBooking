@@ -1,8 +1,9 @@
-import { Box, Grid, LinearProgress, Rating } from '@mui/material'
+import { Box, Container, Grid, LinearProgress, Rating } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import RoomReview from './RoomReview'
 import CommentForm from "../common/CommentForm";
 import { FaAnglesDown, FaAnglesUp } from "react-icons/fa6";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useParams } from 'react-router-dom'
 import { getRoomById, getUser, getCommentByRoomId, deleteComment } from '../utils/ApiFunctions'
 import CommentEdit from '../common/CommentEdit';
@@ -19,7 +20,7 @@ const RoomDetail = () => {
     const [menuOpen, setMenuOpen] = useState(null); // State để xác định trạng thái menu dropdown
     const [editingComment, setEditingComment] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [galleries,setGalleries] =useState([]);
+    const [galleries, setGalleries] = useState([]);
 
 
     const { roomId } = useParams();
@@ -81,7 +82,7 @@ const RoomDetail = () => {
             console.error(error);
         }
     };
-    
+
 
     const handleShowMoreComments = () => {
         setShowMoreComments(true);
@@ -248,11 +249,13 @@ const RoomDetail = () => {
                                     onCancelEdit={handleCancelEdit}
                                 />
                             ) : (
-                                <>
-                                    <RoomReview comment={comment} />
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="flex-grow-1">
+                                        <RoomReview comment={comment} />
+                                    </div>
                                     {user.id === comment.userId && (
                                         <div className="dropdown">
-                                            <button className="dropbtn" onClick={() => setMenuOpen(menuOpen === comment.id ? null : comment.id)}>...</button>
+                                            <button className="dropbtn" onClick={() => setMenuOpen(menuOpen === comment.id ? null : comment.id)}><MoreHorizIcon /></button>
                                             {menuOpen === comment.id && (
                                                 <div className="dropdown-content">
                                                     <button onClick={() => handleEditComment(comment.id)}>Edit</button>
@@ -261,7 +264,7 @@ const RoomDetail = () => {
                                             )}
                                         </div>
                                     )}
-                                </>
+                                </div>
                             )}
                         </Grid>
                     ))}
@@ -280,7 +283,9 @@ const RoomDetail = () => {
                 )}
                 {/* Hiển thị form comment nếu đã đăng nhập */}
                 {user.id && (
-                    <CommentForm userId={user.id} roomId={roomId} fetchComment={fetchComment} />
+                    <Container className='mb-3'>
+                        <CommentForm userId={user.id} roomId={roomId} fetchComment={fetchComment} />
+                    </Container>
                 )}
             </div>
         </section>

@@ -2,6 +2,7 @@ package com.nguyenbaohoa.hotel.service.impl;
 
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import com.nguyenbaohoa.hotel.model.Gallery;
 import com.nguyenbaohoa.hotel.model.Room;
 import com.nguyenbaohoa.hotel.repository.GalleryRepository;
 import com.nguyenbaohoa.hotel.repository.RoomRepository;
+import com.nguyenbaohoa.hotel.response.GalleryResponse;
 import com.nguyenbaohoa.hotel.service.GalleryService;
 
 
@@ -45,17 +47,22 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public Gallery createGallery(MultipartFile image,Long roomId) throws Exception {
-        Gallery gallery = new Gallery();
+    public List<GalleryResponse> createGallery(List<MultipartFile> images, Long roomId) throws Exception {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new Exception("Room not found"));
+        List<GalleryResponse> responses = new ArrayList<>();
 
-        gallery.setRoom(room);
-        if (!image.isEmpty()) {
-            byte[] photoBytes = image.getBytes();
-            Blob photoBlob = new SerialBlob(photoBytes);
-            gallery.setImage(photoBlob);
+        for (MultipartFile image : images) {
+            Gallery gallery = new Gallery();
+            gallery.setRoom(room);
+            if (!image.isEmpty()) {
+                byte[] photoBytes = image.getBytes();
+                Blob photoBlob = new SerialBlob(photoBytes);
+                gallery.setImage(photoBlob);
+            }
+            Gallery savedGallery = galleryRepository.save(gallery);
+            responses.add(new GalleryResponse(savedGallery.getId(), savedGallery.getRoom()));
         }
-       return galleryRepository.save(gallery);
+        return responses;
     }
 
     @Override

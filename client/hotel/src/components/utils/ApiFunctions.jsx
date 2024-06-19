@@ -78,17 +78,28 @@ export async function addComment(image, content, rating, roomId, userId) {
 	}
 }
 
-export async function addGallery(image, roomId) {
-	const formData = new FormData()
-	formData.append("image", image);
-	formData.append("roomId", roomId)
+export async function addGallery(images, roomId) {
+    const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+    }
+    formData.append("roomId", roomId);
 
-	const response = await api.post("/galleries/add/gallery", formData,)
-	if (response.status === 200) {
-		return true
-	} else {
-		return false
-	}
+    try {
+        const response = await api.post("/galleries/add/gallery", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        if (response.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Upload error", error);
+        return false;
+    }
 }
 
 export async function deleteGallery(id) {
@@ -177,7 +188,6 @@ export async function getAllRooms() {
 	}
 }
 
-
 export async function deleteRoom(roomId) {
 	try {
 		const result = await api.delete(`/rooms/delete/room/${roomId}`, {
@@ -188,7 +198,6 @@ export async function deleteRoom(roomId) {
 		throw new Error(`Error deleting room ${error.message}`)
 	}
 }
-
 
 export async function getRoomById(roomId) {
 	try {
@@ -256,7 +265,6 @@ export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
 	return result;
 }
 
-
 export async function registerUser(registration) {
 	try {
 		const response = await api.post("/auth/register-user", registration)
@@ -269,7 +277,6 @@ export async function registerUser(registration) {
 		}
 	}
 }
-
 
 export async function loginUser(login) {
 	try {

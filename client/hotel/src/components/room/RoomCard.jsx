@@ -17,18 +17,16 @@ const RoomCard = ({ room }) => {
                         <Card.Title className='hotel-color'>{room.name}</Card.Title>
                         <Card.Subtitle className='my-3'>{room.roomType}</Card.Subtitle>
                         <Card.Title className='room-price'>${room.roomPrice} / Night</Card.Title>
-                        <Card.Text>{room.description}</Card.Text>
+                        <Card.Text className='overflow-auto'>
+                            {room.description && room.description.length > 50 ? `${room.description.substring(0, 75)}...` : room.description}
+                        </Card.Text>
                     </div>
                     <div className='flex-shrink-0 mt-3'>
                         <Link to={`/book-room/${room.id}`} className='btn btn-hotel btn-sm'>
                             View/Book Now
                         </Link>
                     </div>
-
                 </Card.Body>
-
-
-
             </Card>
         </Col>
     )

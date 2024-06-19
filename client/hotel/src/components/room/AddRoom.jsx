@@ -162,7 +162,7 @@ const AddRoom = () => {
                                 )}
                             </div>
                             <div className='d-grid d-md-flex mt-2'>
-                                <Link className='btn btn-outline-info me-5' to={"/existing-rooms"}>
+                                <Link className='btn btn-outline-info me-5' to={"/admin/room"}>
                                     Back
                                 </Link>
                                 <button className="btn btn-outline-primary">

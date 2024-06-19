@@ -4,6 +4,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import { deleteRoom, getAllRooms } from '../../utils/ApiFunctions';
 import { Link } from 'react-router-dom';
+import { Image } from 'react-bootstrap';
 const PopularRoom = () => {
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -63,9 +64,8 @@ const PopularRoom = () => {
                         <div className="card shadow p-3">
                             <div className="row g-4">
                                 <div className="col-md-3">
-                                    <img
+                                    <Image fluid rounded 
                                         src={`data:image/png;base64, ${room.photo}`}
-                                        className="rounded-2 img-fluid"
                                         alt="Card image"
                                     />
                                 </div>
@@ -98,8 +98,10 @@ const PopularRoom = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <h5 className="card-title mb-0 me-5">                                        
+                                        <h5 className="card-title mb-0 me-5">
+                                            <Link to={`/room-detail/${room.id}`} className="text-decoration-none text-dark">
                                                 {room.name}
+                                            </Link>                                     
                                         </h5>
                                         <small>
                                             <FaMapMarkerAlt className="me-1 mb-1" />

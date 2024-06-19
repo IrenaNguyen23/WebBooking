@@ -174,7 +174,7 @@ const EditRoom = () => {
                         </div>
 
                         <div className='d-grid d-md-flex mt-2'>
-                            <Link className='btn btn-outline-info ml-5' to={"/existing-rooms"}>
+                            <Link className='btn btn-outline-info ml-5' to={"/admin/room"}>
                                 Back
                             </Link>
                             <button className="btn btn-outline-warning" type='submit'>

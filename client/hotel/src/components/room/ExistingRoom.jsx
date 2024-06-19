@@ -5,6 +5,14 @@ import RoomPaginator from '../common/RoomPaginator'
 import { deleteRoom, getAllRooms } from '../utils/ApiFunctions'
 import { FaEdit, FaEye, FaPlus, FaTrashAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { styled } from '@mui/material'
+
+const TruncatedTableCell = styled('td')({
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '250px', // Điều chỉnh chiều rộng theo nhu cầu của bạn
+  });
 
 const ExistingRoom = () => {
     const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "" }])
@@ -121,7 +129,7 @@ const ExistingRoom = () => {
                                     <tr key={room.id} className='text-center'>
                                         <td>{room.id}</td>
                                         <td>{room.name}</td>
-                                        <td>{room.description}</td>
+                                        <TruncatedTableCell>{room.description}</TruncatedTableCell>
                                         <td>{room.roomType}</td>
                                         <td>{room.roomPrice}</td>
                                         <td className='gap-2'>

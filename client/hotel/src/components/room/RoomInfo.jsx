@@ -42,7 +42,7 @@ const RoomInfo = ({ room, data, gallery }) => {
                     <ul className="list-unstyled">
                         <li>Price per night: ${data.roomPrice}</li>
                         <li>Size: {room.size} sqm</li>
-                        <li>Max Guests: {room.maxGuests}</li>
+                        {/* <li>Max Guests: {room.maxGuests}</li> */}
                         <li>Bed Type: {data.roomType}</li>
                     </ul>
                     <h5>Amenities</h5>
