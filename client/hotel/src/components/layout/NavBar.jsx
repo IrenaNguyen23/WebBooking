@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react"
 import { NavLink, Link } from "react-router-dom"
 import Logout from "../auth/Logout"
-import DiamondIcon from '@mui/icons-material/Diamond';
-
 
 const NavBar = () => {
 	const [showAccount, setShowAccount] = useState(false)
@@ -42,6 +40,11 @@ const NavBar = () => {
 						<li className="nav-item">
 							<NavLink className="nav-link" aria-current="page" to={"/contact"}>
 								Contact
+							</NavLink>
+						</li>
+						<li className="nav-item">
+							<NavLink className="nav-link" aria-current="page" to={"/about-us"}>
+								About Us
 							</NavLink>
 						</li>
 

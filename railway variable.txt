@@ -1,0 +1,6 @@
+DB_PORT=3306
+DB_NAME=railway
+DB_USERNAME=root
+DB_PASSWORD=luiqBxCfRuZDLspDlRHISYpGHVKEBtLO
+DB_HOST=mysql.railway.internal
+

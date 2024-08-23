@@ -15,6 +15,7 @@ import Profile from '../auth/Profile';
 import Footer from '../layout/Footer';
 import ContactForm from '../contact/Contact';
 import ExistingRoom from '../room/ExistingRoom';
+import About from '../aboutUs/AboutUs';
 const CustomerRoutes = () => {
   return (
     <main>
@@ -22,6 +23,7 @@ const CustomerRoutes = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/contact' element={<ContactForm />} />
+        <Route path="/about-us" element={<About />} />
         <Route
           path="/book-room/:roomId"
           element={

@@ -14,7 +14,7 @@ const RoomCarousel = () => {
         setIsLoading(true)
         getAllRooms().then((data) => {
             const sortedRooms = data.sort((a, b) => b.bookings.length - a.bookings.length);
-            const topRooms = sortedRooms.slice(0,8);
+            const topRooms = sortedRooms.slice(0, 8);
             setRooms(topRooms)
             setIsLoading(false)
         }).catch((error) => {
@@ -36,22 +36,24 @@ const RoomCarousel = () => {
                 <Carousel indicators={false}>
                     {[...Array(Math.ceil(rooms.length / 4))].map((_, index) => (
                         <Carousel.Item key={index}>
-                            <Row>
+                            <Row className='g-4 my-2'>
                                 {rooms.slice(index * 4, index * 4 + 4).map((room) => (
-                                    <Col key={room.id} className='mb-4' xs={12} md={6} lg={3}>
-                                        <Card>
+                                    <Col key={room.id} xs={12} md={6} lg={3}>
+                                        <Card className='d-flex flex-column h-100'>
                                             <Link to={`/room-detail/${room.id}`} >
-                                                <Card.Img variant='top'
+                                                <Card.Img
+                                                    variant='top'
                                                     src={`data:image/png;base64,${room.photo}`}
                                                     alt='Room Photo'
                                                     className='w-100'
-                                                    style={{ height: "300px" }} />
+                                                    style={{ height: '300px', objectFit: 'cover' }}
+                                                />
                                             </Link>
-                                            <Card.Body>
+                                            <Card.Body className='d-flex flex-column flex-grow-1'>
                                                 <Card.Title className='hotel-color'>{room.name}</Card.Title>
                                                 <Card.Subtitle className='my-2'>{room.roomType}</Card.Subtitle>
-                                                <Card.Title className='room-price'>${room.roomPrice} / Night</Card.Title>
-                                                <div className='flex-shrink-0 mt-3'>
+                                                <Card.Title className='room-price mt-auto'>${room.roomPrice} / Night</Card.Title>
+                                                <div className='mt-3'>
                                                     <Link to={`/book-room/${room.id}`} className='btn btn-hotel btn-sm'>
                                                         Book Now
                                                     </Link>
@@ -64,8 +66,9 @@ const RoomCarousel = () => {
                         </Carousel.Item>
                     ))}
                 </Carousel>
+
                 <Link to={"/browse-all-rooms"} className='hotel-color text-center ' style={{ display: 'block', width: '200px', margin: '0 auto' }}>
-                    <span>View All Rooms</span>
+                    <strong>View All Rooms</strong>
                 </Link>
             </Container>
         </section>
